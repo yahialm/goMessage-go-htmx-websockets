@@ -6,9 +6,9 @@
   <script src="https://unpkg.com/htmx.org@1.9.10"
     integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
     crossorigin="anonymous"></script>
-  <!-- HTMX Websockets extension https://htmx.org/extensions/web-sockets/ -->
+  <!-- HTMX Websockets extension -->
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <meta charset="UTF-8">
@@ -16,18 +16,26 @@
   <title>Realtime Chat</title>
 </head>
 
-<body>
-  <h1 class="text-3xl text-center p-4">Chat</h1>
-  <div hx-ext="ws" ws-connect="/ws">
-    <div class="flex bg-gray-100 p-4">
-      <ul id="chat_room" hx-swap="beforeend" hx-swap-oob="beforeend">
-      </ul>
+<body class="bg-gray-900 h-screen flex items-center justify-center">
+  <div class="w-full max-w-lg">
+    <h1 class="text-3xl text-center p-4 text-white">Chat Room</h1>
+
+    <!-- Chat Messages -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg overflow-y-auto max-h-96">
+      <ul id="chat_room" class="text-gray-200" hx-swap-oob="beforeend"></ul>
     </div>
 
-    <form id="form" ws-send hx-reset-on-success>
-      <input name="text" type="text" class="border-2 border-gray-300 p-2" placeholder="Type your message"
-        >
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2">Send</button>
+    <!-- Chat Form -->
+    <form id="form" hx-ext="ws" ws-connect="/ws" 
+      ws-send="{'text': document.querySelector('[name=text]').value}" 
+      hx-reset-on-success 
+      hx-target="this" 
+      class="flex items-center mt-4">
+        <input name="text" type="text" 
+         class="w-full bg-gray-700 text-gray-200 border border-gray-600 p-2 rounded-l focus:outline-none" 
+         placeholder="Type your message" />
+        <button type="submit" 
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r">Send</button>
     </form>
   </div>
 </body>

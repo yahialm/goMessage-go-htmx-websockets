@@ -33,7 +33,6 @@ func main() {
 	})
 
 	// Run the server
-	err := http.ListenAndServe(":3000", nil)
-	log.Fatal(err)
+	log.Fatal(http.ListenAndServe(":3000", nil))
 
 }

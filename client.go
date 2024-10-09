@@ -107,7 +107,7 @@ func (c *Client) readPump() {
 			log.Printf("error: %v", err)
 		}
 
-		c.hub.broadcast <- &Message{userId: c.id, message: msg.Text}
+		c.hub.broadcast <- &Message{UserId: c.id, Message: msg.Text}
 
 	}
 
@@ -146,12 +146,13 @@ func (c *Client) writePump() {
 				log.Printf("error: %v", err)
 			}
 
-			w.Write(msg)
+			// w.Write(msg)
 
 			n := len(c.send)
 			for i:=0; i<n; i++ {
-				nextMsg := <-c.send
-				w.Write(nextMsg)
+				// nextMsg := <-c.send
+				// w.Write(nextMsg)
+				w.Write(msg)
 			}
 
 			if err:=w.Close(); err != nil {

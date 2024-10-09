@@ -1,8 +1,8 @@
 package main
 
 type Message struct {
-	userId  string
-	message string
+	UserId  string
+	Message string
 }
 
 type WSMessage struct {
