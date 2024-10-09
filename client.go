@@ -72,7 +72,7 @@ func (c *Client) readPump() {
 	}()
 
 	c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetWriteDeadline(time.Now().Add(pongWait))
+	c.conn.SetReadDeadline(time.Now().Add(pongWait))
 
 	/*
 		-> This function handles pong messages from the client.
@@ -123,12 +123,20 @@ func (c *Client) writePump() {
 
 	for {
 		select {
+
 		case msg, ok := <-c.send:
+
+			// --> Sets a write deadline to ensure that if writing a message takes too long,
+			// (e.g., if the network is slow), it times out after writeWait
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			
+			// If the ok flag is false, the channel has been closed (meaning the client likely disconnected),
+			// and the connection is terminated by sending a Close message to the WebSocket (websocket.CloseMessage)
 			if !ok {
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
+
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
@@ -142,14 +150,15 @@ func (c *Client) writePump() {
 
 			n := len(c.send)
 			for i:=0; i<n; i++ {
-				w.Write(msg)
+				nextMsg := <-c.send
+				w.Write(nextMsg)
 			}
 
 			if err:=w.Close(); err != nil {
 				return
 			}
 
-		
+		// You are receiving a value from ticker.C, but you are not storing that value in any variable.
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
