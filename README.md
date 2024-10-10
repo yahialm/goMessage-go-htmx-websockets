@@ -11,7 +11,7 @@ This is a simple real-time chat application built using **Go**, **WebSockets**, 
 
 Before running the project, make sure you have the following installed on your machine:
 
-- [Go](https://golang.org/doc/install) (version 1.16 or above)
+- [Go](https://golang.org/doc/install)
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - An internet connection to fetch Tailwind CSS and HTMX libraries.
 
@@ -21,7 +21,7 @@ Before running the project, make sure you have the following installed on your m
 First, clone the repository to your local machine:
 
 ```bash
-git clone <your-repo-url>
+git clone <get_repo_name>
 cd <your-repo-folder>
 ```
 
@@ -36,7 +36,7 @@ To install these dependencies, run the following commands:
 
 ```bash
 go get github.com/gorilla/websocket
-go get github.com/google/uuid
+go get github.com/lucasepe/codename
 ```
 
 ### 3. Running the Application
@@ -44,17 +44,17 @@ go get github.com/google/uuid
 To run the project, simply use the Go \`run\` command. This will start the server:
 
 ```bash
-go run main.go hub.go client.go
+go run main.go
 ```
 
-This will launch the server on \`localhost:8080\` (or another specified port).
+This will launch the server on \`localhost:3000\`
 
 ### 4. Accessing the Application
 
 Open your browser and navigate to:
 
 ```
-http://localhost:8080/
+http://localhost:3000/
 ```
 
 Here, you'll be able to chat with other connected clients in real-time.
