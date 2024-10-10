@@ -33,10 +33,15 @@ func (h *Hub) run() {
 
 			log.Printf("user with ID: %s registred", client.id)
 
+			for _, msg := range h.messages {
+				client.send <- getMessageTemplate(msg)
+			}
+
 
 		case client := <- h.unregister:
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
+				log.Printf("user with ID: %s unregistred", client.id)
 			}
 
 		case msg := <- h.broadcast:

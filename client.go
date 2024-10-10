@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"github.com/lucasepe/codename"
 )
 
 type Client struct {
@@ -47,11 +47,16 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := uuid.New()
+	rng, err := codename.DefaultRNG()
+	if err != nil {
+		panic(err)
+	}
+
+	id := codename.Generate(rng, 5)
 
 	// create the client
 	client := &Client{
-		id:   id.String(),
+		id:   id,
 		hub:  hub,
 		conn: conn,
 		send: make(chan []byte),
