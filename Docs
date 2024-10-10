@@ -1,0 +1,37 @@
+# How the communication happens between the browser/client and the server ?
+
+The WebSocket connection is initiated from the frontend, and in your case, HTMX is responsible for starting that WebSocket connection using its WebSocket extension.
+
+--> Here's the detailed process:
+
+    1. WebSocket Initialization by HTMX (Frontend):
+        When the user opens the chat page, HTMX (via the hx-ext="ws" and ws-connect="/ws") triggers the WebSocket connection from the browser to the server.
+        This means that the client-side (your browser) establishes a connection to the /ws endpoint on the server.
+
+    2. Server Spins Up a Client Object:
+        When the server (written in Go) detects a new WebSocket connection, it creates a client object for that specific connection. This client object will:
+            -> Store the connection (usually called conn).
+            -> Hold the communication channels (send) to exchange messages.
+        The server now uses this client object as a proxy to send messages back and forth between the server and the browser (the user).
+
+    3. Real-time Communication:
+        -> From this point on, the server (via the Hub) can broadcast messages to all connected clients. Each client (user) is managed through its corresponding client object in the server.
+        -> Whenever a message is sent by one user, the server broadcasts it to all connected clients via their WebSocket connections.
+
+    4. HTML Rendering (HTMX):
+        -> Instead of sending plain text or JSON, the server sends an HTML fragment (generated using getMessageTemplate).
+        -> HTMX, listening on the WebSocket connection, takes this HTML and inserts it into the page automatically, updating the chat interface in real-time.
+
+So, HTMX handles:
+
+    Initiating the WebSocket connection.
+    Sending user messages via WebSocket.
+    Receiving server-generated HTML fragments and updating the chat UI.
+
+And the server (Go code):
+
+    Manages WebSocket connections through client objects.
+    Broadcasts messages to all clients.
+    Renders HTML for each new message to update the chat interface.
+
+This setup makes HTMX a powerful tool for real-time communication without needing to manually write JavaScript to handle WebSocket connections.
