@@ -7,6 +7,12 @@ This is a simple real-time chat application built using **Go**, **WebSockets**, 
 - Dynamic front-end built with HTMX and Tailwind CSS
 - A chat history that updates automatically without refreshing the page
 
+## Architecture
+
+![Architecture](./architecture.png)
+
+This diagram illustrates how the WebSocket server, clients, and frontend interact in the real-time chat application.
+
 ## Prerequisites
 
 Before running the project, make sure you have the following installed on your machine:
